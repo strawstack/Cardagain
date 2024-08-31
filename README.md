@@ -1,6 +1,6 @@
 # Chinese Vocab
 
-Flash card app for Chinese Vocab for HSK levels.
+Configurable flash card platform with persistent state. 
 
 # Resources
 
