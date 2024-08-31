@@ -2,6 +2,8 @@
 
 Configurable flash card platform with persistent state. 
 
+![](./logo.png)
+
 # Resources
 
 https://github.com/drkameleon/complete-hsk-vocabulary/tree/main
