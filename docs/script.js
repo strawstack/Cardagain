@@ -3,14 +3,14 @@
     const data = cards();
 
     const {
-        test
+        setState
     } = helper();
 
     function main() {
 
-        test();
-
-        console.log(data);
+        setState(state => {
+            return state;
+        });
 
     }
 
