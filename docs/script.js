@@ -9,6 +9,7 @@
     function main() {
 
         setState(state => {
+            // init state
             return state;
         });
 
