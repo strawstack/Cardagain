@@ -16,19 +16,13 @@ function trim(json) {
 }
 
 function main() {
+    const json = [];
     fore(7, i => {
         const module = i + 1;
-        const json = trim(JSON.parse(readFileSync(`${module}.json`, 'utf-8'))).map(card => {
+        trim(JSON.parse(readFileSync(`${module}.json`, 'utf-8'))).map(card => {
             card["module"] = module;
-            card["data"] = {
-                "correct": 0,
-                "incorrect": 0,
-                "skip": 0,
-                "hide": false,
-                "english": null // user override for english meaning
-            }
             return card;
-        });
+        }).forEach(e => json.push(e));
         
         const content = `const cards = () => { return ${JSON.stringify(json, null, 2)}; }`;
         
