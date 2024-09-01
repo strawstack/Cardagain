@@ -45,7 +45,7 @@ body, .viewport {
         }
     }
 
-    .card-container {
+    .cardContainer {
         grid-row: 2 / 3;
         grid-column: 2 / 3;
 
@@ -92,7 +92,6 @@ body, .viewport {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                border: 1px solid #333;
 
                 .area {
                     display: flex;
