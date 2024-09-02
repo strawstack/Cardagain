@@ -4,13 +4,32 @@ function fore(n, func) {
     Array(n).fill(0).forEach((_, i) => func(i));
 }
 
+function removeBrackets(str) {
+    return str.replaceAll(/\(.+?\)/g, "");
+}
+
+function expandSemiColon(str) {
+    return str.split("; ");
+}
+
+function sortByLength(arr) {
+    return arr.sort((a, b) => a.length - b.length);
+}
+
+function trimMeaning(meaning) {
+    meaning = meaning.map(t => removeBrackets(t));
+    meaning = meaning.map(t => expandSemiColon(t)).flat();
+    meaning = sortByLength(meaning);
+    return meaning;
+}
+
 // trim down full json
 function trim(json) {
     return json.map(card => {
         return {
             simplified: card["simplified"],
             pinyin: card["forms"][0]["transcriptions"]["pinyin"],
-            english: card["forms"][0]["meanings"][0]
+            english: trimMeaning(card["forms"][0]["meanings"])
         }
     });
 }

@@ -1,5 +1,13 @@
 const helper = () => {
 
+    /* cards: Array of following:
+    {"simplified": "阿拉伯语",
+    "pinyin": "Ā lā bó yǔ",
+    "english": "Arabic (language)",
+    "module": 7}
+    */
+    const data = cards();
+
     const location = {
         QUESTION: 0,
         ANSWER: 1,
@@ -7,14 +15,31 @@ const helper = () => {
         SETTINGS: 3
     };
 
+    const menu = {
+        NONE: 0,
+        PALLETS: 1,
+        SAVE_LOAD: 2,
+        MORE: 3
+    };
+
     let state = {
         index: 0,
         location: location.QUESTION,
+        menu: menu.NONE,
+        cards: { // map {uid -> data}
+            example: {
+                correct: 0,
+                incorrect: 0,
+                skip: 0,
+                hide: false,
+                english: null // user override for english meaning   
+            }
+        }
     };
 
     function setState(func) {
         const copystate = JSON.parse(JSON.stringify(state));
-        func(copystate);
+        func(copystate, data);
         state = copystate;
         render(state);
     }
@@ -35,9 +60,6 @@ const helper = () => {
             elem: qs(".viewport .settings"),
             pallets: {
                 elem: qs(".viewport .settings .pallets"),
-                pallet: {
-                    elem: qs(".viewport .settings .pallets .pallet")
-                } 
             },
             saveload: {
                 elem: qs(".viewport .settings .saveload")
@@ -45,37 +67,38 @@ const helper = () => {
             more: {
                 elem: qs(".viewport .settings .more")
             },
+            area: {
+                elem: qs(".viewport .settings .area"),
+                pallets: {
+                    elem: qs(".viewport .settings .area .pallets")
+                }
+            },
         },
         cardContainer: {
             elem: qs(".viewport .cardContainer"),
             config: {
                 elem: qs(".viewport .cardContainer .config"),
                 hide: {
-                    elem: qs(".viewport .cardContainer .config")
+                    elem: qs(".viewport .cardContainer .config .hide")
                 },
                 skip: {
-                    elem: qs(".viewport .cardContainer .skip")
+                    elem: qs(".viewport .cardContainer .config .skip")
+                },
+                reset: {
+                    elem: qs(".viewport .cardContainer .config .reset")
                 }
             },
             card: {
                 elem: qs(".viewport .cardContainer .card"),
-                question: {
-                    elem: qs(".viewport .cardContainer .card .question"),
-                    english: {
-                        elem: qs(".viewport .cardContainer .card .question .english")
-                    }
+
+                english: {
+                    elem: qs(".viewport .cardContainer .card .english")
                 },
-                answer: {
-                    elem: qs(".viewport .cardContainer .card .answer"),
-                    area: {
-                        elem: qs(".viewport .cardContainer .card .answer .area"),
-                        simplified: {
-                            elem: qs(".viewport .cardContainer .card .answer .area .simplified")
-                        },
-                        characters: {
-                            elem: qs(".viewport .cardContainer .card .answer .area .characters")
-                        }
-                    }
+                pinyin: {
+                    elem: qs(".viewport .cardContainer .card .pinyin")
+                },
+                simplified: {
+                    elem: qs(".viewport .cardContainer .card .simplified")
                 }
             },
             actions: {
@@ -113,16 +136,24 @@ const helper = () => {
 
     function render(state) {
 
+        // Card
         setStyle(
-            viewport.cardContainer.card.question.elem, 
-            "display", 
-            (state.location === location.QUESTION) ? null : "none"
+            viewport.cardContainer.card.english.elem, 
+            "grid-row", 
+            (state.location === location.QUESTION) ? null : "2 / 3"
         );
         setStyle(
-            viewport.cardContainer.card.answer.elem, 
+            viewport.cardContainer.card.pinyin.elem, 
             "display", 
             (state.location === location.ANSWER) ? null : "none"
         );
+        setStyle(
+            viewport.cardContainer.card.simplified.elem, 
+            "display", 
+            (state.location === location.ANSWER) ? null : "none"
+        );
+
+        // Card Actions
         setStyle(
             viewport.cardContainer.actions.question.elem, 
             "display", 
@@ -134,18 +165,101 @@ const helper = () => {
             (state.location === location.ANSWER) ? null : "none"
         );
 
-        viewport.cardContainer.card.question.english.elem.innerHTML = `English: ${state.index}`;
-        viewport.cardContainer.card.answer.area.simplified.elem.innerHTML = `Simplified: ${state.index}`;
-        viewport.cardContainer.card.answer.area.characters.elem.innerHTML = `Characters: ${state.index}`;
+        // Menu
+        setStyle(
+            viewport.settings.area.pallets.elem,
+            "display",
+            (state.menu === menu.PALLETS) ? null : "none"
+        );
+
+        viewport.cardContainer.card.english.elem.innerHTML = data[state.index].english.join("<br>");
+        viewport.cardContainer.card.pinyin.elem.innerHTML = data[state.index].pinyin;
+        viewport.cardContainer.card.simplified.elem.innerHTML = data[state.index].simplified;
     }
+
+    const pallets = [
+        {
+            name: "classic",
+            pallet: [
+                "#0081A7",
+                "#00AFB9",
+                "#FDFCDC",
+                "#FED9B7",
+                "#F07167",
+            ]
+        },
+        {
+            name: "candy",
+            pallet: [
+                "#9B5DE5",
+                "#F15BB5",
+                "#FEE440",
+                "#00BBF9",
+                "#00F5D4",
+            ]
+        },
+        {
+            name: "aqua",
+            pallet: [
+                "#03045E",
+                "#0077B6",
+                "#00B4D8",
+                "#90E0EF",
+                "#CAF0F8",
+            ]
+        },
+        {
+            name: "heat",
+            pallet: [
+                "#F08080",
+                "#F4978E",
+                "#F8AD9D",
+                "#FBC4AB",
+                "#FFDAB9",
+            ]
+        },
+        {
+            name: "trance",
+            pallet: [
+                "#CDB4DB",
+                "#FFC8DD",
+                "#FFAFCC",
+                "#BDE0FE",
+                "#A2D2FF",
+            ]
+        },
+        {
+            name: "dust",
+            pallet: [
+                "#EDEDE9",
+                "#D6CCC2",
+                "#F5EBE0",
+                "#E3D5CA",
+                "#D5BDAF",
+            ]
+        },
+        {
+            name: "cyber",
+            pallet: [
+                "#3C1642",
+                "#086375",
+                "#1DD3B0",
+                "#AFFC41",
+                "#B2FF9E",
+                
+            ]
+        }
+    ];
 
     return {
         setState,
         location,
+        menu,
         viewport,
         onClick: (elem, func) => {
             elem.addEventListener("click", e => func(e));
-        }
+        },
+        pallets
     };
 
 }
