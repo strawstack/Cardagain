@@ -18,9 +18,83 @@ const helper = () => {
     const menu = {
         NONE: 0,
         PALLETS: 1,
-        SAVE_LOAD: 2,
+        SAVELOAD: 2,
         MORE: 3
     };
+
+    const pallets = [
+        {
+            name: "classic",
+            pallet: [
+                "#0081A7",
+                "#00AFB9",
+                "#FDFCDC",
+                "#FED9B7",
+                "#F07167",
+            ]
+        },
+        {
+            name: "candy",
+            pallet: [
+                "#9B5DE5",
+                "#F15BB5",
+                "#FEE440",
+                "#00BBF9",
+                "#00F5D4",
+            ]
+        },
+        {
+            name: "aqua",
+            pallet: [
+                "#03045E",
+                "#0077B6",
+                "#00B4D8",
+                "#90E0EF",
+                "#CAF0F8",
+            ]
+        },
+        {
+            name: "heat",
+            pallet: [
+                "#F08080",
+                "#F4978E",
+                "#F8AD9D",
+                "#FBC4AB",
+                "#FFDAB9",
+            ]
+        },
+        {
+            name: "trance",
+            pallet: [
+                "#CDB4DB",
+                "#FFC8DD",
+                "#FFAFCC",
+                "#BDE0FE",
+                "#A2D2FF",
+            ]
+        },
+        {
+            name: "dust",
+            pallet: [
+                "#EDEDE9",
+                "#D6CCC2",
+                "#F5EBE0",
+                "#E3D5CA",
+                "#D5BDAF",
+            ]
+        },
+        {
+            name: "cyber",
+            pallet: [
+                "#3C1642",
+                "#086375",
+                "#1DD3B0",
+                "#AFFC41",
+                "#B2FF9E",
+                
+            ]
+        }
+    ];
 
     let state = {
         index: 0,
@@ -34,9 +108,10 @@ const helper = () => {
                 hide: false,
                 english: null // user override for english meaning   
             }
-        }
+        },
+        pallets
     };
-
+    
     function setState(func) {
         const copystate = JSON.parse(JSON.stringify(state));
         func(copystate, data);
@@ -71,6 +146,15 @@ const helper = () => {
                 elem: qs(".viewport .settings .area"),
                 pallets: {
                     elem: qs(".viewport .settings .area .pallets")
+                },
+                saveload: {
+                    elem: qs(".viewport .settings .area .saveload"),
+                    save: {
+                        elem: qs(".viewport .settings .area .saveload .save")
+                    },
+                    load: {
+                        elem: qs(".viewport .settings .area .saveload .load")
+                    }
                 }
             },
         },
@@ -171,85 +255,16 @@ const helper = () => {
             "display",
             (state.menu === menu.PALLETS) ? null : "none"
         );
+        setStyle(
+            viewport.settings.area.saveload.elem,
+            "display",
+            (state.menu === menu.SAVELOAD) ? null : "none"
+        );
 
         viewport.cardContainer.card.english.elem.innerHTML = data[state.index].english.join("<br>");
         viewport.cardContainer.card.pinyin.elem.innerHTML = data[state.index].pinyin;
         viewport.cardContainer.card.simplified.elem.innerHTML = data[state.index].simplified;
     }
-
-    const pallets = [
-        {
-            name: "classic",
-            pallet: [
-                "#0081A7",
-                "#00AFB9",
-                "#FDFCDC",
-                "#FED9B7",
-                "#F07167",
-            ]
-        },
-        {
-            name: "candy",
-            pallet: [
-                "#9B5DE5",
-                "#F15BB5",
-                "#FEE440",
-                "#00BBF9",
-                "#00F5D4",
-            ]
-        },
-        {
-            name: "aqua",
-            pallet: [
-                "#03045E",
-                "#0077B6",
-                "#00B4D8",
-                "#90E0EF",
-                "#CAF0F8",
-            ]
-        },
-        {
-            name: "heat",
-            pallet: [
-                "#F08080",
-                "#F4978E",
-                "#F8AD9D",
-                "#FBC4AB",
-                "#FFDAB9",
-            ]
-        },
-        {
-            name: "trance",
-            pallet: [
-                "#CDB4DB",
-                "#FFC8DD",
-                "#FFAFCC",
-                "#BDE0FE",
-                "#A2D2FF",
-            ]
-        },
-        {
-            name: "dust",
-            pallet: [
-                "#EDEDE9",
-                "#D6CCC2",
-                "#F5EBE0",
-                "#E3D5CA",
-                "#D5BDAF",
-            ]
-        },
-        {
-            name: "cyber",
-            pallet: [
-                "#3C1642",
-                "#086375",
-                "#1DD3B0",
-                "#AFFC41",
-                "#B2FF9E",
-                
-            ]
-        }
-    ];
 
     return {
         setState,
@@ -258,8 +273,7 @@ const helper = () => {
         viewport,
         onClick: (elem, func) => {
             elem.addEventListener("click", e => func(e));
-        },
-        pallets
+        }
     };
 
 }

@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
+:root {
+    --color-bkg: white;
+    --color-tiles: grey;
+    --color-text-bkg: lightgrey;
+    --color-text: #222;
+}
+
 html, body {
     margin: 0px;
     padding: 0px;
@@ -9,17 +16,19 @@ html, body {
     font-weight: 500;
     font-style: normal;
     font-variation-settings: "wdth" 100;
+    color: var(--color-text);
 }
 
 body, .viewport {
     min-height: 100vh;
     position: relative;
+    background: var(--color-bkg);
 }
 
 .tile-btn {
     height: 80px;
     width: 80px;
-    background: rgba(99,99,99,0.2);
+    background: var(--color-tiles);
     cursor: pointer;
     font-size: 1.2rem;
     display: flex;
@@ -62,7 +71,6 @@ body, .viewport {
             grid-column: 1 / 4;
 
             .pallets {
-                background: rgba(99,99,99,0.2);
                 display: flex;
                 flex-direction: column;
                 row-gap: 20px;
@@ -75,6 +83,7 @@ body, .viewport {
                     grid-template-columns: repeat(5, 1fr);
                     cursor: pointer;
                     transition: rotate 0.2s;
+                    border: 2px solid white;
 
                     .area {
                         position: absolute;
@@ -90,7 +99,29 @@ body, .viewport {
 
                     &:hover {
                         transform: rotate(-3deg);
-                    }                    
+                    }
+                }
+            }
+
+            .saveload {
+                display: grid;
+                grid-template-rows: repeat(2, 80px);
+                row-gap: 20px;
+
+                .save, .load {
+                    background: var(--color-tiles);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: white;
+                    font-size: 3rem;
+                    user-select: none;
+                    cursor: pointer;
+                    transition: rotate 0.2s;
+
+                    &:hover {
+                        transform: rotate(-3deg);
+                    }
                 }
             }
         }
@@ -123,7 +154,7 @@ body, .viewport {
         .card {
             width: 486px;
             height: 380px;
-            background: rgba(99,99,99,0.2);
+            background: var(--color-tiles);
             display: grid;
             row-gap: 20px;
             grid-template-rows: 1fr repeat(3, 100px) 1fr;
@@ -132,7 +163,7 @@ body, .viewport {
             .english {
                 grid-row: 3 / 4;
                 grid-column: 2 / 3;
-                background: rgba(99,99,99,0.2);
+                background: var(--color-text-bkg);
                 width: 220px;
                 height: 80px;
                 padding: 10px;
@@ -149,7 +180,7 @@ body, .viewport {
                 justify-content: center;
                 align-items: center;
                 font-size: 3.5rem;
-                background: rgba(99,99,99,0.2);
+                background: var(--color-text-bkg);
             }
             .simplified {
                 grid-row: 4 / 5;
@@ -161,11 +192,9 @@ body, .viewport {
                 justify-content: center;
                 align-items: center;
                 font-size: 2rem;
-                background: rgba(99,99,99,0.2);
+                background: var(--color-text-bkg);
             }
         }
-            
-        
 
         .actions {
             display: grid;
