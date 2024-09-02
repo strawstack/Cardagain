@@ -47,6 +47,12 @@
                     //document.body.style.setProperty("--color-text", pallet[3]);
                 });
             }
+
+            // Default pallet
+            const dpal = 5;
+            document.body.style.setProperty("--color-bkg", state.pallets[dpal].pallet[0]);
+            document.body.style.setProperty("--color-tiles", state.pallets[dpal].pallet[1]);
+            document.body.style.setProperty("--color-text-bkg", state.pallets[dpal].pallet[2]);
         });
 
         function nextIndex(state, value) {
@@ -119,6 +125,15 @@
                 }
             });
         });
+        onClick(viewport.settings.more.elem, e => {
+            setState(state => {
+                if (state.menu === menu.MORE) {
+                    state.menu = menu.NONE;
+                } else {
+                    state.menu = menu.MORE;
+                }
+            });
+        });
         onClick(viewport.settings.area.saveload.save.elem, e => {
             setState(state => {
                 viewport.settings.area.saveload.savedata.elem.innerHTML = JSON.stringify(state, null, 2);
@@ -129,6 +144,13 @@
                 console.log("call: load");
             });
         });
+
+        viewport.cardContainer.card.english.elem.addEventListener("input", e => {
+            const text = e.target.innerHTML;
+            setState(state => {
+                state.cards[state.index].english = text;
+            });
+        }, false);
 
     }
 

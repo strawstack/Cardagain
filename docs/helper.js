@@ -158,7 +158,10 @@ const helper = () => {
                     savedata: {
                         elem: qs(".viewport .settings .area .saveload .savedata")
                     }
-                }
+                },
+                more: {
+                    elem: qs(".viewport .settings .area .more")
+                },
             },
         },
         cardContainer: {
@@ -263,8 +266,21 @@ const helper = () => {
             "display",
             (state.menu === menu.SAVELOAD) ? null : "none"
         );
+        setStyle(
+            viewport.settings.area.more.elem,
+            "display",
+            (state.menu === menu.MORE) ? null : "none"
+        );
 
-        viewport.cardContainer.card.english.elem.innerHTML = data[state.index].english.join("<br>");
+        const getEnglish = () => {
+            if (state.cards[state.index].english === null) {
+                return data[state.index].english.join("\n");
+            } else {
+                return state.cards[state.index].english;
+            }
+        };
+
+        viewport.cardContainer.card.english.elem.innerHTML = getEnglish();
         viewport.cardContainer.card.pinyin.elem.innerHTML = data[state.index].pinyin;
         viewport.cardContainer.card.simplified.elem.innerHTML = data[state.index].simplified;
     }

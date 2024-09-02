@@ -42,9 +42,7 @@ function main() {
             card["module"] = module;
             return card;
         }).forEach(e => json.push(e));
-        
         const content = `const cards = () => { return ${JSON.stringify(json, null, 2)}; }`;
-        
         writeFileSync("cards.js", content);
     });
 }
