@@ -154,6 +154,9 @@ const helper = () => {
                     },
                     load: {
                         elem: qs(".viewport .settings .area .saveload .load")
+                    },
+                    savedata: {
+                        elem: qs(".viewport .settings .area .saveload .savedata")
                     }
                 }
             },

@@ -105,7 +105,7 @@ body, .viewport {
 
             .saveload {
                 display: grid;
-                grid-template-rows: repeat(2, 80px);
+                grid-template-rows: repeat(3, 80px);
                 row-gap: 20px;
 
                 .save, .load {
@@ -122,6 +122,14 @@ body, .viewport {
                     &:hover {
                         transform: rotate(-3deg);
                     }
+                }
+
+                .savedata {
+                    height: 240px;
+                    border: 1px solid var(--color-tiles);
+                    width: 280px;
+                    overflow-x: hidden;
+                    overflow-y: scroll;
                 }
             }
         }

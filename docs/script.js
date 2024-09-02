@@ -121,7 +121,7 @@
         });
         onClick(viewport.settings.area.saveload.save.elem, e => {
             setState(state => {
-                console.log("call: save");
+                viewport.settings.area.saveload.savedata.elem.innerHTML = JSON.stringify(state, null, 2);
             });
         });
         onClick(viewport.settings.area.saveload.load.elem, e => {
