@@ -38,7 +38,21 @@
         }
 
         // Create Pallets
-        
+        for (let { name, pallet } of pallets) {
+            const container = document.createElement("div");
+            container.className = "pallet";
+            for (let hex of pallet) {
+                const color = document.createElement("div");
+                color.className = "color";
+                color.style.background = hex;
+                container.appendChild(color);
+            }
+            const area = document.createElement("div");
+            area.className = "area";
+            area.innerHTML = name;
+            container.appendChild(area);
+            viewport.settings.area.pallets.elem.appendChild(container);
+        }
 
         // Actions
         onClick(viewport.cardContainer.actions.question.next.elem, e => {
