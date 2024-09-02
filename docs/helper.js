@@ -109,7 +109,8 @@ const helper = () => {
                 english: null // user override for english meaning   
             }
         },
-        pallets
+        pallets,
+        default_pallet: "dust"
     };
     
     function setState(func) {
@@ -117,6 +118,7 @@ const helper = () => {
         func(copystate, data);
         state = copystate;
         render(state);
+        localStorage.setItem("state", JSON.stringify(state));
     }
 
     const qs = (() => {
@@ -160,7 +162,10 @@ const helper = () => {
                     }
                 },
                 more: {
-                    elem: qs(".viewport .settings .area .more")
+                    elem: qs(".viewport .settings .area .more"),
+                    clearLocalstorage: {
+                        elem: qs(".viewport .settings .area .more .clearLocalstorage")
+                    }
                 },
             },
         },
@@ -283,6 +288,12 @@ const helper = () => {
         viewport.cardContainer.card.english.elem.innerHTML = getEnglish();
         viewport.cardContainer.card.pinyin.elem.innerHTML = data[state.index].pinyin;
         viewport.cardContainer.card.simplified.elem.innerHTML = data[state.index].simplified;
+
+        // Set pallet
+        const { pallet } = state.pallets.find(e => e["name"] === state.default_pallet);
+        document.body.style.setProperty("--color-bkg", pallet[0]);
+        document.body.style.setProperty("--color-tiles", pallet[1]);
+        document.body.style.setProperty("--color-text-bkg", pallet[2]);
     }
 
     return {

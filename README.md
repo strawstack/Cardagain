@@ -4,11 +4,8 @@ Configurable flash card platform with persistent state.
 
 # Todo
 
-- [ ] Selection of english term in buildCards should look for:
-    - Take two shortest words from ";" lists
-    - Element with fewest words
-    - Prefer lowest index
 - [ ] In settings>more, show all hidden terms (for unhiding purposes)
+- [ ] Show current term index and total terms in set
 
 ![](./logo.png)
 

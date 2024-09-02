@@ -12,15 +12,25 @@
 
         // init
         setState((state, data) => {
-            // Init data for each card
-            // TODO - only if no local storage present
-            for (let i = 0; i < data.length; i++) {
-                state.cards[i] = {
-                    correct: 0,
-                    incorrect: 0,
-                    skip: 0,
-                    hide: false,
-                    english: null
+
+            // Load from local storage
+            const storage_str = localStorage.getItem("state");
+            const storage = (storage_str === null) ? storage_str : JSON.parse(storage_str); 
+            
+            // Data for each card
+            if (storage === null) {
+                for (let i = 0; i < data.length; i++) {
+                    state.cards[i] = {
+                        correct: 0,
+                        incorrect: 0,
+                        skip: 0,
+                        hide: false,
+                        english: null
+                    }
+                }
+            } else {
+                for (const key in state) {
+                    state[key] = storage[key];
                 }
             }
 
@@ -44,15 +54,12 @@
                     document.body.style.setProperty("--color-bkg", pallet[0]);
                     document.body.style.setProperty("--color-tiles", pallet[1]);
                     document.body.style.setProperty("--color-text-bkg", pallet[2]);
-                    //document.body.style.setProperty("--color-text", pallet[3]);
+                    setState((s, _) => { // Update default pallet
+                        s.default_pallet = name;
+                    });
                 });
-            }
 
-            // Default pallet
-            const dpal = 5;
-            document.body.style.setProperty("--color-bkg", state.pallets[dpal].pallet[0]);
-            document.body.style.setProperty("--color-tiles", state.pallets[dpal].pallet[1]);
-            document.body.style.setProperty("--color-text-bkg", state.pallets[dpal].pallet[2]);
+            }
         });
 
         function nextIndex(state, value) {
@@ -74,12 +81,14 @@
         });
         onClick(viewport.cardContainer.actions.answer.correct.elem, e => {
             setState(state => {
+                state.cards[state.index].correct += 1;
                 nextIndex(state);
                 state.location = location.QUESTION;
             });
         });
         onClick(viewport.cardContainer.actions.answer.incorrect.elem, e => {
             setState(state => {
+                state.cards[state.index].incorrect += 1;
                 nextIndex(state, 0);
                 state.location = location.QUESTION;
             });
@@ -95,6 +104,7 @@
         });
         onClick(viewport.cardContainer.config.skip.elem, e => {
             setState(state => {
+                state.cards[state.index].skip += 1;
                 nextIndex(state);
                 state.location = location.QUESTION;
             });
@@ -134,6 +144,8 @@
                 }
             });
         });
+
+        // Menu - saveload
         onClick(viewport.settings.area.saveload.save.elem, e => {
             setState(state => {
                 viewport.settings.area.saveload.savedata.elem.innerHTML = JSON.stringify(state, null, 2);
@@ -141,10 +153,21 @@
         });
         onClick(viewport.settings.area.saveload.load.elem, e => {
             setState(state => {
-                console.log("call: load");
+                const data = JSON.parse(
+                    viewport.settings.area.saveload.savedata.elem.innerHTML
+                );
+                for (let key in state) {
+                    state[key] = data[key];
+                }
             });
         });
 
+        // Menu - more
+        onClick(viewport.settings.area.more.clearLocalstorage.elem, e => {
+            localStorage.clear();
+        });
+
+        // Change event - english content
         viewport.cardContainer.card.english.elem.addEventListener("input", e => {
             const text = e.target.innerHTML;
             setState(state => {
