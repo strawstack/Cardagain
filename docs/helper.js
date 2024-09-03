@@ -6,7 +6,18 @@ const helper = () => {
     "english": "Arabic (language)",
     "module": 7}
     */
-    const data = cards();
+    const cards = card_data().map(card => {
+        return {
+            ...{
+                correct: 0,
+                incorrect: 0,
+                skip: 0,
+                hide: false,
+                english: null
+            },
+            ...card
+        };
+    });
 
     const location = {
         QUESTION: 0,
@@ -100,22 +111,14 @@ const helper = () => {
         index: 0,
         location: location.QUESTION,
         menu: menu.NONE,
-        cards: { // map {uid -> data}
-            example: {
-                correct: 0,
-                incorrect: 0,
-                skip: 0,
-                hide: false,
-                english: null // user override for english meaning
-            }
-        },
+        cards,
         pallets,
         default_pallet: "dust"
     };
 
     function setState(func) {
         const copystate = JSON.parse(JSON.stringify(state));
-        func(copystate, data);
+        func(copystate);
         state = copystate;
         render(state);
         localStorage.setItem("state", JSON.stringify(state));
@@ -274,17 +277,9 @@ const helper = () => {
             (state.menu === menu.MORE) ? null : "none"
         );
 
-        const getEnglish = () => {
-            if (state.cards[state.index].english === null) {
-                return data[state.index].english.join("\n");
-            } else {
-                return state.cards[state.index].english;
-            }
-        };
-
-        viewport.cardContainer.card.english.elem.innerHTML = getEnglish();
-        viewport.cardContainer.card.pinyin.elem.innerHTML = data[state.index].pinyin;
-        viewport.cardContainer.card.simplified.elem.innerHTML = data[state.index].simplified;
+        viewport.cardContainer.card.english.elem.innerHTML = state.cards[state.index].english;
+        viewport.cardContainer.card.pinyin.elem.innerHTML = state.cards[state.index].pinyin;
+        viewport.cardContainer.card.simplified.elem.innerHTML = state.cards[state.index].simplified;
 
         // Set pallet
         const { pallet } = state.pallets.find(e => e["name"] === state.default_pallet);

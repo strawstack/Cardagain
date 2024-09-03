@@ -13,24 +13,14 @@
     function main() {
 
         // init
-        setState((state, data) => {
+        setState(state => {
 
             // Load from local storage
             const storage_str = localStorage.getItem("state");
             const storage = (storage_str === null) ? storage_str : JSON.parse(storage_str);
 
             // Data for each card
-            if (storage === null) {
-                for (let i = 0; i < data.length; i++) {
-                    state.cards[i] = {
-                        correct: 0,
-                        incorrect: 0,
-                        skip: 0,
-                        hide: false,
-                        english: null
-                    }
-                }
-            } else {
+            if (storage !== null) {
                 for (const key in state) {
                     state[key] = storage[key];
                 }
@@ -56,7 +46,7 @@
                     document.body.style.setProperty("--color-bkg", pallet[0]);
                     document.body.style.setProperty("--color-tiles", pallet[1]);
                     document.body.style.setProperty("--color-text-bkg", pallet[2]);
-                    setState((s, _) => { // Update default pallet
+                    setState((s) => { // Update default pallet
                         s.default_pallet = name;
                     });
                 });
