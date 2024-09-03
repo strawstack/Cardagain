@@ -91,7 +91,7 @@ const helper = () => {
                 "#1DD3B0",
                 "#AFFC41",
                 "#B2FF9E",
-                
+
             ]
         }
     ];
@@ -106,13 +106,13 @@ const helper = () => {
                 incorrect: 0,
                 skip: 0,
                 hide: false,
-                english: null // user override for english meaning   
+                english: null // user override for english meaning
             }
         },
         pallets,
         default_pallet: "dust"
     };
-    
+
     function setState(func) {
         const copystate = JSON.parse(JSON.stringify(state));
         func(copystate, data);
@@ -225,7 +225,7 @@ const helper = () => {
                 ref.style[prop] = defaults[ref.uid];
             } else {
                 ref.style[prop] = value;
-            } 
+            }
         }
     })();
 
@@ -233,30 +233,30 @@ const helper = () => {
 
         // Card
         setStyle(
-            viewport.cardContainer.card.english.elem, 
-            "grid-row", 
+            viewport.cardContainer.card.english.elem,
+            "grid-row",
             (state.location === location.QUESTION) ? null : "2 / 3"
         );
         setStyle(
-            viewport.cardContainer.card.pinyin.elem, 
-            "display", 
+            viewport.cardContainer.card.pinyin.elem,
+            "display",
             (state.location === location.ANSWER) ? null : "none"
         );
         setStyle(
-            viewport.cardContainer.card.simplified.elem, 
-            "display", 
+            viewport.cardContainer.card.simplified.elem,
+            "display",
             (state.location === location.ANSWER) ? null : "none"
         );
 
         // Card Actions
         setStyle(
-            viewport.cardContainer.actions.question.elem, 
-            "display", 
+            viewport.cardContainer.actions.question.elem,
+            "display",
             (state.location === location.QUESTION) ? null : "none"
         );
         setStyle(
-            viewport.cardContainer.actions.answer.elem, 
-            "display", 
+            viewport.cardContainer.actions.answer.elem,
+            "display",
             (state.location === location.ANSWER) ? null : "none"
         );
 
@@ -295,6 +295,14 @@ const helper = () => {
         document.body.style.setProperty("--color-tiles", pallet[1]);
         document.body.style.setProperty("--color-text-bkg", pallet[2]);
     }
+
+    const save = data => {
+
+    };
+
+    const load = data => {
+
+    };
 
     return {
         setState,
