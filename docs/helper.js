@@ -156,9 +156,6 @@ const helper = () => {
                     },
                     load: {
                         elem: qs(".viewport .settings .area .saveload .load")
-                    },
-                    savedata: {
-                        elem: qs(".viewport .settings .area .saveload .savedata")
                     }
                 },
                 more: {
@@ -297,11 +294,21 @@ const helper = () => {
     }
 
     const save = data => {
-
+        function download(filename, text) {
+            var link = document.createElement('a');
+            link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            link.setAttribute('download', filename);
+            link.click();
+        }
+        download("cardagain_state.json", JSON.stringify(data, null, 2));
     };
 
     const load = data => {
-
+        setState(state => {
+            for (let key in state) {
+                state[key] = data[key];
+            }
+        });
     };
 
     return {
@@ -311,7 +318,9 @@ const helper = () => {
         viewport,
         onClick: (elem, func) => {
             elem.addEventListener("click", e => func(e));
-        }
+        },
+        save,
+        load
     };
 
 }

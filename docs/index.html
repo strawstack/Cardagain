@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>vocab</title>
+    <title>Cardagain</title>
     <link rel="stylesheet" href="style.css">
     <script src="cards.js"></script>
     <script src="helper.js"></script>
@@ -19,9 +19,11 @@
         <div class="area">
           <div class="pallets"></div>
           <div class="saveload">
-            <div class="load">load</div>
+            <div class="load">
+              <label for="upload" class="overlay">load</label>
+              <input id="upload" type="file" />
+            </div>
             <div class="save">save</div>
-            <div class="savedata" contenteditable="true"></div>
           </div>
           <div class="more">
             <div class="clearLocalstorage tile-btn-wide">Clear local storage</div>
@@ -36,7 +38,7 @@
         </div>
 
         <div class="card">
-          <pre class="english" contenteditable="true"></pre>  
+          <pre class="english" contenteditable="true"></pre>
           <div class="pinyin"></div>
           <div class="simplified"></div>
         </div>

@@ -5,7 +5,9 @@
         location,
         menu,
         viewport,
-        onClick
+        onClick,
+        save,
+        load
     } = helper();
 
     function main() {
@@ -15,8 +17,8 @@
 
             // Load from local storage
             const storage_str = localStorage.getItem("state");
-            const storage = (storage_str === null) ? storage_str : JSON.parse(storage_str); 
-            
+            const storage = (storage_str === null) ? storage_str : JSON.parse(storage_str);
+
             // Data for each card
             if (storage === null) {
                 for (let i = 0; i < data.length; i++) {
@@ -49,7 +51,7 @@
                 area.innerHTML = name;
                 container.appendChild(area);
                 viewport.settings.area.pallets.elem.appendChild(container);
-    
+
                 onClick(container, e => {
                     document.body.style.setProperty("--color-bkg", pallet[0]);
                     document.body.style.setProperty("--color-tiles", pallet[1]);
@@ -148,18 +150,17 @@
         // Menu - saveload
         onClick(viewport.settings.area.saveload.save.elem, e => {
             setState(state => {
-                viewport.settings.area.saveload.savedata.elem.innerHTML = JSON.stringify(state, null, 2);
+                save(state);
             });
         });
-        onClick(viewport.settings.area.saveload.load.elem, e => {
-            setState(state => {
-                const data = JSON.parse(
-                    viewport.settings.area.saveload.savedata.elem.innerHTML
-                );
-                for (let key in state) {
-                    state[key] = data[key];
-                }
-            });
+        viewport.settings.area.saveload.load.elem.addEventListener("change", e => {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.readAsText(file, 'UTF-8');
+            reader.onload = readerEvent => {
+                const content = JSON.parse(readerEvent.target.result);
+                load(content);
+            }
         });
 
         // Menu - more
