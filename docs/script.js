@@ -4,6 +4,7 @@
         setState,
         location,
         menu,
+        timer,
         viewport,
         onClick,
         save,
@@ -11,6 +12,9 @@
     } = helper();
 
     function main() {
+        
+        // Allows timer cancel
+        let interval = null;
 
         // init
         setState(state => {
@@ -52,6 +56,16 @@
                 });
 
             }
+
+            // Start timer if active
+            if (state.timer.status === timer.ACTIVE) {
+                interval = setInterval(() => {
+                    setState(s => {
+                        s.timer.seconds = s.timer.seconds + 1;
+                    });
+                }, 1000);
+            }
+
         });
 
         function nextIndex(state, value) {
@@ -73,6 +87,7 @@
         });
         onClick(viewport.cardContainer.actions.answer.correct.elem, e => {
             setState(state => {
+                state.streak = state.streak + 1;
                 state.cards[state.index].correct += 1;
                 nextIndex(state);
                 state.location = location.QUESTION;
@@ -80,6 +95,7 @@
         });
         onClick(viewport.cardContainer.actions.answer.incorrect.elem, e => {
             setState(state => {
+                state.streak = 0;
                 state.cards[state.index].incorrect += 1;
                 nextIndex(state, 0);
                 state.location = location.QUESTION;
@@ -103,6 +119,7 @@
         });
         onClick(viewport.cardContainer.config.reset.elem, e => {
             setState(state => {
+                state.streak = 0;
                 nextIndex(state, 0);
                 state.location = location.QUESTION;
             });
@@ -165,6 +182,33 @@
                 state.cards[state.index].english = text;
             });
         }, false);
+
+        // Timer
+        onClick(viewport.stats.timer.controls.start.elem, e => {
+            setState(state => {
+                if (state.timer.status === timer.PAUSE) {
+                    state.timer.status = timer.ACTIVE;
+                    interval = setInterval(() => {
+                        setState(s => {
+                            s.timer.seconds = s.timer.seconds + 1;
+                        });
+                    }, 1000);
+                }
+            });
+        });
+        onClick(viewport.stats.timer.controls.pausereset.elem, e => {
+            setState(state => {
+                if (state.timer.status === timer.ACTIVE) {
+                    state.timer.status = timer.PAUSE;
+                    clearInterval(interval);
+                    interval = null;
+
+                } else if (state.timer.status === timer.PAUSE) {
+                    state.timer.seconds = 0;
+
+                }
+            });
+        });
 
     }
 

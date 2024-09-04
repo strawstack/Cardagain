@@ -33,6 +33,11 @@ const helper = () => {
         MORE: 3
     };
 
+    const timer = {
+        PAUSE: 0,
+        ACTIVE: 1
+    };
+
     const pallets = [
         {
             name: "classic",
@@ -109,11 +114,16 @@ const helper = () => {
 
     let state = {
         index: 0,
+        streak: 0,
         location: location.QUESTION,
         menu: menu.NONE,
         cards,
         pallets,
-        default_pallet: "dust"
+        default_pallet: "dust",
+        timer: {
+            seconds: 0,
+            status: timer.PAUSE
+        }
     };
 
     function setState(func) {
@@ -136,6 +146,48 @@ const helper = () => {
 
     const viewport = {
         elem: qs(".viewport"),
+        stats: {
+            elem: qs(".viewport .stats"),
+            timer: {
+                elem: qs(".viewport .stats .timer"),
+                time: {
+                    elem: qs(".viewport .stats .timer .time"),
+                },
+                controls: {
+                    elem: qs(".viewport .stats .timer .controls"),
+                    start: {
+                        elem: qs(".viewport .stats .timer .controls .start"),
+                    },
+                    pausereset: {
+                        elem: qs(".viewport .stats .timer .controls .pausereset"),
+                    }
+                }
+            },
+            info: {
+                elem: qs(".viewport .stats .info"),
+                card: {
+                    elem: qs(".viewport .stats .info .card"),
+                    n: {
+                        elem: qs(".viewport .stats .info .card .n"),
+                    },
+                    total: {
+                        elem: qs(".viewport .stats .info .card .total"),
+                    }
+                },
+                streak: {
+                    elem: qs(".viewport .stats .info .streak"),
+                    n: {
+                        elem: qs(".viewport .stats .info .streak .n")
+                    }
+                },
+                hsk: {
+                    elem: qs(".viewport .stats .info .hsk"),
+                    n: {
+                        elem: qs(".viewport .stats .info .hsk .n")
+                    }
+                }
+            }
+        },
         settings: {
             elem: qs(".viewport .settings"),
             pallets: {
@@ -286,6 +338,19 @@ const helper = () => {
         document.body.style.setProperty("--color-bkg", pallet[0]);
         document.body.style.setProperty("--color-tiles", pallet[1]);
         document.body.style.setProperty("--color-text-bkg", pallet[2]);
+
+        // Set timer
+        const pad = n => (n < 10) ? `0${n}` : n;
+        const min = Math.floor(state.timer.seconds / 60);
+        const sec = state.timer.seconds - 60 * min;
+        viewport.stats.timer.time.elem.innerHTML = `${pad(min)}:${pad(sec)}`;
+        viewport.stats.timer.controls.pausereset.elem.innerHTML = (state.timer.status === timer.ACTIVE) ? "pause" : "reset";
+
+        // Info
+        viewport.stats.info.card.n.elem.innerHTML = state.index;
+        viewport.stats.info.card.total.elem.innerHTML = state.cards.length;
+        viewport.stats.info.streak.n.elem.innerHTML = state.streak;
+        viewport.stats.info.hsk.n.elem.innerHTML = state.cards[state.index].hsk;
     }
 
     const save = data => {
@@ -310,6 +375,7 @@ const helper = () => {
         setState,
         location,
         menu,
+        timer,
         viewport,
         onClick: (elem, func) => {
             elem.addEventListener("click", e => func(e));

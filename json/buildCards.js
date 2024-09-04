@@ -52,7 +52,7 @@ function main() {
     fore(7, i => {
         const module = i + 1;
         trim(JSON.parse(readFileSync(`${module}.json`, 'utf-8')), state).map(card => {
-            card["module"] = module;
+            card["hsk"] = module;
             return card;
         }).forEach(e => json.push(e));
         const content = `const card_data = () => { return ${JSON.stringify(json, null, 2)}; }`;
