@@ -250,6 +250,9 @@ const helper = () => {
             },
             actions: {
                 elem: qs(".viewport .cardContainer .actions"),
+                back: {
+                    elem: qs(".viewport .cardContainer .actions .back")
+                },
                 question: {
                     elem: qs(".viewport .cardContainer .actions .question"),
                     next: {

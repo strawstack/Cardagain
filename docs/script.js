@@ -79,6 +79,17 @@
             }
         }
 
+        function prevIndex(state) {
+            let nextState = state.index;
+            if (nextState > 0) {
+                nextState -= 1;
+                while (state.cards[nextState].hide && nextState > 0) {
+                    nextState -= 1;
+                }
+            }
+            state.index = nextState;
+        }
+
         // Actions
         onClick(viewport.cardContainer.actions.question.next.elem, e => {
             setState(state => {
@@ -98,6 +109,12 @@
                 state.streak = 0;
                 state.cards[state.index].incorrect += 1;
                 nextIndex(state, 0);
+                state.location = location.QUESTION;
+            });
+        });
+        onClick(viewport.cardContainer.actions.back.elem, e => {
+            setState(state => {
+                prevIndex(state);
                 state.location = location.QUESTION;
             });
         });
