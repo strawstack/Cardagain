@@ -351,7 +351,7 @@ const helper = () => {
 
         // Info
         viewport.stats.info.card.n.elem.innerHTML = state.index;
-        viewport.stats.info.card.total.elem.innerHTML = state.cards.length;
+        viewport.stats.info.card.total.elem.innerHTML = state.cards.filter(({hide}) => !hide).length;
         viewport.stats.info.streak.n.elem.innerHTML = state.streak;
         viewport.stats.info.hsk.n.elem.innerHTML = state.cards[state.index].hsk;
     }
