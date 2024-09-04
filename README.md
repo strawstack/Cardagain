@@ -5,7 +5,6 @@ Configurable flash card platform with persistent state.
 # Todo
 
 - [ ] In settings>more, show all hidden terms (for unhiding purposes)
-- [ ] Show current term index and total terms in set.
 
 ![](./logo.png)
 
