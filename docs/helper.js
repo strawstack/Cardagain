@@ -123,7 +123,8 @@ const helper = () => {
         timer: {
             seconds: 0,
             status: timer.PAUSE
-        }
+        },
+        listhidden: false
     };
 
     function setState(func) {
@@ -217,6 +218,15 @@ const helper = () => {
                     elem: qs(".viewport .settings .area .more"),
                     clearLocalstorage: {
                         elem: qs(".viewport .settings .area .more .clearLocalstorage")
+                    },
+                    listhidden: {
+                        elem: qs(".viewport .settings .area .more .listhidden"),
+                        btn: {
+                            elem: qs(".viewport .settings .area .more .listhidden .btn")
+                        },
+                        list: {
+                            elem: qs(".viewport .settings .area .more .listhidden .list")
+                        }                        
                     }
                 },
             },
@@ -341,6 +351,7 @@ const helper = () => {
         document.body.style.setProperty("--color-bkg", pallet[0]);
         document.body.style.setProperty("--color-tiles", pallet[1]);
         document.body.style.setProperty("--color-text-bkg", pallet[2]);
+        document.body.style.setProperty("--action", pallet[4]);
 
         // Set timer
         const pad = n => (n < 10) ? `0${n}` : n;
@@ -354,6 +365,39 @@ const helper = () => {
         viewport.stats.info.card.total.elem.innerHTML = state.cards.filter(({hide}) => !hide).length;
         viewport.stats.info.streak.n.elem.innerHTML = state.streak;
         viewport.stats.info.hsk.n.elem.innerHTML = state.cards[state.index].hsk;
+
+        // List Hidden
+        viewport.settings.area.more.listhidden.list.elem.style.display = (state.listhidden) ? "" : "none";
+
+        // Create hidden list
+        Array.from(viewport.settings.area.more.listhidden.list.elem.children).forEach(e => e.remove());
+        for (let { hide, pinyin, id } of state.cards.map((card, i) => {
+            card["id"] = i;
+            return card;
+        })) {
+            if (hide === true) {
+                const row = document.createElement("div");
+                row.className = "row";
+                const label = document.createElement("div");
+                label.className = "label";
+                const action = document.createElement("div");
+                action.className = "action";
+                
+                row.appendChild(label);
+                row.appendChild(action);
+
+                label.innerHTML = pinyin;
+                action.innerHTML = "unhide";
+
+                action.addEventListener("click", () => {
+                    setState(state => {
+                        state.cards[id].hide = false;
+                    });
+                });
+
+                viewport.settings.area.more.listhidden.list.elem.appendChild(row);
+            }
+        }
     }
 
     const save = data => {

@@ -191,6 +191,11 @@
         onClick(viewport.settings.area.more.clearLocalstorage.elem, e => {
             localStorage.clear();
         });
+        onClick(viewport.settings.area.more.listhidden.btn.elem, e => {
+            setState(state => {
+                state.listhidden = !state.listhidden;
+            });
+        });
 
         // Change event - english content
         viewport.cardContainer.card.english.elem.addEventListener("input", e => {
